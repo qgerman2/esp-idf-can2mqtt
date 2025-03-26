@@ -5,6 +5,8 @@
 	software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
 	CONDITIONS OF ANY KIND, either express or implied.
 */
+#include "Arduino.h"
+#include "esp32-hal-log.h"
 
 #include <stdio.h>
 #include <inttypes.h>
@@ -377,9 +379,11 @@ void dump_table(TOPIC_t *topics, int16_t ntopic)
 void mqtt_pub_task(void *pvParameters);
 void mqtt_sub_task(void *pvParameters);
 void twai_task(void *pvParameters);
+void h2_task(void *pvParameters);
 
 void app_main()
 {
+    initArduino();
 	// Initialize NVS
 	esp_err_t ret = nvs_flash_init();
 	if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
@@ -441,4 +445,5 @@ void app_main()
 	xTaskCreate(mqtt_pub_task, "mqtt_pub", 1024*4, NULL, 2, NULL);
 	xTaskCreate(mqtt_sub_task, "mqtt_sub", 1024*4, NULL, 2, NULL);
 	xTaskCreate(twai_task, "twai_rx", 1024*6, NULL, 2, NULL);
+    xTaskCreate(h2_task, "h2", 1024*6, NULL, 2, NULL);
 }

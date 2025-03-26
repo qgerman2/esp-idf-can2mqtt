@@ -6,6 +6,8 @@
 	CONDITIONS OF ANY KIND, either express or implied.
 */
 
+#include "esp32-hal-log.h"
+
 #include <stdio.h>
 #include <inttypes.h>
 #include <stdint.h>
